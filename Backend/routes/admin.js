@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { z } from "zod";
 import bcrypt from "bcrypt";
-import adminModel from "../db/models/admin"; // Adjust path as necessary
+import jwt from "jsonwebtoken";
+import adminModel from "../db/models/admin.js"; // Adjust path as necessary
+const JWT_ADMIN_PASSWORD = process.env.JWR_ADMIN_PASSWORD;
 
 const adminRoutes = Router();
 
@@ -36,6 +38,41 @@ adminRoutes.post("/signup", async function (req, res) {
     username: newUser.username,
     mssg: "Signup successful",
   });
+});
+
+adminRoutes.post("/signin", async function (req, res) {
+  const { email, password } = req.body;
+
+  const user = await adminModel.findOne({
+    email: email,
+  });
+
+  const username = user.name;
+
+  if (!user) {
+    res.status(403).json({
+      mssg: "User not found",
+    });
+  }
+
+  const decryptedPassword = await bcrypt.compare(password, user.password);
+
+  if (decryptedPassword) {
+    const token = jwt.sign(
+      {
+        id: user.id,
+      },
+      JWT_ADMIN_PASSWORD
+    );
+    res.json({
+      token: token,
+      username: username,
+    });
+  } else {
+    res.json({
+      mssg: "incorrect credentials",
+    });
+  }
 });
 
 export default adminRoutes;

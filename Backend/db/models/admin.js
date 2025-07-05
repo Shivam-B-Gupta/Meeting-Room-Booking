@@ -1,5 +1,5 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../db";
+import sequelize from "../db.js";
 
 const adminModel = sequelize.define("Admin", {
   name: {
@@ -17,4 +17,4 @@ const adminModel = sequelize.define("Admin", {
   },
 });
 
-module.exports = adminModel;
+export default adminModel;
