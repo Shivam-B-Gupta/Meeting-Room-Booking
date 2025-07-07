@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-const JWT_ADMIN_PASSWORD = process.env.JWR_ADMIN_PASSWORD;
+const JWT_ADMIN_PASSWORD = process.env.JWT_ADMIN_PASSWORD;
 
 function adminAuthentication(req, res, next) {
   const token = req.headers.token;
@@ -12,7 +12,7 @@ function adminAuthentication(req, res, next) {
 
   try {
     const decodedValue = jwt.verify(token, JWT_ADMIN_PASSWORD);
-    req.userId = decodedValue.id;
+    req.adminId = decodedValue.id;
     next();
   } catch (err) {
     res.status(402).json({
@@ -21,6 +21,4 @@ function adminAuthentication(req, res, next) {
   }
 }
 
-module.exports = {
-  adminAuthentication: adminAuthentication,
-};
+export default adminAuthentication;

@@ -3,7 +3,7 @@ import { z } from "zod";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import adminModel from "../db/models/admin.js"; // Adjust path as necessary
-const JWT_ADMIN_PASSWORD = process.env.JWR_ADMIN_PASSWORD;
+const JWT_ADMIN_PASSWORD = process.env.JWT_ADMIN_PASSWORD;
 
 const adminRoutes = Router();
 
@@ -11,7 +11,7 @@ adminRoutes.post("/signup", async function (req, res) {
   const requiredBody = z.object({
     email: z.string().min(3).max(50).email(),
     password: z.string().min(8).max(15),
-    username: z.string().min(3).max(20),
+    name: z.string().min(3).max(20),
   });
 
   const parsedDataWithSuccess = requiredBody.safeParse(req.body);
@@ -22,20 +22,20 @@ adminRoutes.post("/signup", async function (req, res) {
     return;
   }
 
-  const { email, password, username } = parsedDataWithSuccess.data;
+  const { email, password, name } = parsedDataWithSuccess.data;
 
   const hashedPassword = await bcrypt.hash(password, 5);
 
   const newUser = await adminModel.create({
     email,
     password: hashedPassword,
-    username,
+    name,
   });
 
   console.log("🟢 New user created:", newUser);
 
   return res.json({
-    username: newUser.username,
+    name: newUser.name,
     mssg: "Signup successful",
   });
 });
@@ -44,16 +44,15 @@ adminRoutes.post("/signin", async function (req, res) {
   const { email, password } = req.body;
 
   const user = await adminModel.findOne({
-    email: email,
+    where: { email },
   });
-
-  const username = user.name;
 
   if (!user) {
     res.status(403).json({
       mssg: "User not found",
     });
   }
+  const name = user.name;
 
   const decryptedPassword = await bcrypt.compare(password, user.password);
 
@@ -66,7 +65,7 @@ adminRoutes.post("/signin", async function (req, res) {
     );
     res.json({
       token: token,
-      username: username,
+      name: name,
     });
   } else {
     res.json({

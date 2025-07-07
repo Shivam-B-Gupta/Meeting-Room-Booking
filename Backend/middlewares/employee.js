@@ -21,6 +21,4 @@ function employeeAuthentication(req, res, next) {
   }
 }
 
-module.exports = {
-  employeeAuthentication: employeeAuthentication,
-};
+export default employeeAuthentication;
