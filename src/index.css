@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+.custom-placeholder::placeholder {
+  padding-left: 2px;
+}
+
+*{
+    margin: 0.3px;
+    padding: 0.3px;
+}

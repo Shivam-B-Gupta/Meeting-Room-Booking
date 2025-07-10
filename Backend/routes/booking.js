@@ -2,6 +2,8 @@ import { Router } from "express";
 const bookingRoutes = Router();
 import employeeAuthentication from "../middlewares/employee.js";
 import { Op } from "sequelize";
+import employeeModel from "../db/models/employee.js";
+import roomModel from "../db/models/room.js";
 
 bookingRoutes.post(
   "/booking",
@@ -9,6 +11,9 @@ bookingRoutes.post(
   async function (req, res) {
     const { roomId, startTime, endTime } = req.body;
     const employeeId = req.userId;
+    const bookingTime = `${startTime} to ${endTime}`;
+    const room = await roomModel.findByPk(roomId);
+    const employee = await employeeModel.findByPk(employeeId);
 
     const existingBooking = await bookingModel.findOne({
       where: {
@@ -42,6 +47,11 @@ bookingRoutes.post(
     });
 
     res.json({ mssg: "Room booked successfully" });
+
+    // Send confirmation email
+    await sendBookingConfirmation(employee.email, room.name, bookingTime);
+
+    res.json({ mssg: "Room booked and confirmation sent!" });
   }
 );
 
