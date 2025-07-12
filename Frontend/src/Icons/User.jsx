@@ -3,10 +3,10 @@ export default function User() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
-      viewBox="0 0 24 24"
+      viewBox="0 0 22 22"
       strokeWidth="1.5"
-      stroke="currentColor"
-      className="size-6"
+      stroke="#D11AEE"
+      className="size-7 mr-4 cursor-pointer"
     >
       <path
         strokeLinecap="round"
