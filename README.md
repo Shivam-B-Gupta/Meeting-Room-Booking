@@ -1,12 +1,32 @@
-# React + Vite
+1. Project Title &; Description
+   o The Project Title is Meeting Room Booking Appication(MeetSpace)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+2. Team Details
+   o Team name
 
-Currently, two official plugins are available:
+- BitByBit
+  o Member names
+- Shivam Gupta
+- Shri Dhanush Reddy
+  o contact emails
+- sshivamgupta833@gmail.com
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+3. Tech Stack
+   o Nodejs, Express, React, Mysql.
 
-## Expanding the ESLint configuration
+4. Project Description
+   o The meeting room booking Application is build using the above tech stack which allows an admin to create an acount and add, update, and delete a Room on the website and as a user or employee can book and cancel a room which he has booked.
+   After Booking a room the user get an email of successful booking
+   The api's restric the user by double booking
+5. Setup Instructions
+   o To Run the project locally on the machine clone it using the url and install the required node dependencies on your local machine, you should have installed mysql workbench to connect the database.
+   Before connecting to the database add a dotenv file and set the required data using '.env.example' file
+   After succefully conneting and installing the required dependencies run the project.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+6. API Endpoints / Architecture
+   o I have used routing for api's
+
+- the Api is divided into three endpoints: 'room', 'admin', and 'employee'
+- admin has 'signup' and 'signin' endpoints
+- employee has 'signup' and 'signin' endpoints
+- room has 'add', 'update' and 'delete' endpoints
