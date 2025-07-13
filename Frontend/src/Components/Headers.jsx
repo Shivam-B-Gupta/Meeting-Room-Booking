@@ -19,10 +19,10 @@ export default function Headers() {
           <Link to="/meetspace/home" className={navLink}>
             Home
           </Link>
-          <Link to="" className={navLink}>
+          <Link to="/meetspace/bookaspace" className={navLink}>
             Book a Space
           </Link>
-          <Link to="" className={navLink}>
+          <Link to="/meetspace/home#explore" className={navLink}>
             Explore
           </Link>
           <Link to="" className={navLink}>

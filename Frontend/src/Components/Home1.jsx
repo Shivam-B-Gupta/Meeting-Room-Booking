@@ -1,6 +1,7 @@
 import React from "react";
 import { IconTrendingUp3 } from "@tabler/icons-react";
 import { Button2 } from "./Button";
+import { Link } from "react-router-dom";
 
 export default function Home1() {
   return (
@@ -15,7 +16,9 @@ export default function Home1() {
             connects you with premium spaces designed for productivity and
             collaboration
           </h2>
-          <Button2 textOnButton="Explore" Icon={IconTrendingUp3} />
+          <Link to="#explore" className="flex">
+            <Button2 textOnButton="Explore" Icon={IconTrendingUp3} />
+          </Link>
         </div>
       </div>
     </div>

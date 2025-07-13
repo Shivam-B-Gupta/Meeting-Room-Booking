@@ -2,16 +2,18 @@ import { useState } from "react";
 import Auth from "./Pages/Auth";
 import Headers from "./Components/Headers";
 import Home from "./Pages/Home";
+import Calendar from "./Pages/Calendar";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 
 function App() {
   return (
     <>
-      {/* <Auth /> */}
+      <Auth />
       <BrowserRouter>
         <Routes>
           <Route path="/meetspace" element={<Layout />}>
             <Route path="home" element={<Home />} />
+            <Route path="bookaspace" element={<Calendar />} />
           </Route>
         </Routes>
       </BrowserRouter>
