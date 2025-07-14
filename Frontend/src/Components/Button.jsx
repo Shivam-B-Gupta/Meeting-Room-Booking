@@ -1,9 +1,12 @@
 import React from "react";
 
-export default function Button({ textOnButton }) {
+export default function Button({ textOnButton, onClick }) {
   return (
     <>
-      <button className="w-32 h-10 bg-purple-500 rounded-md cursor-pointer">
+      <button
+        onClick={onClick}
+        className="w-32 h-10 bg-purple-500 rounded-md cursor-pointer"
+      >
         {textOnButton}
       </button>
     </>

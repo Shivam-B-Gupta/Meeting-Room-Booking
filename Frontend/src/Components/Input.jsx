@@ -1,6 +1,13 @@
 import React from "react";
 
-export default function Input({ type, placeholder, id, icon: Icon }) {
+export default function Input({
+  type,
+  placeholder,
+  id,
+  icon: Icon,
+  value,
+  onChange,
+}) {
   return (
     <div className=" ">
       <label htmlFor={id} className="text-xl ">
@@ -12,6 +19,8 @@ export default function Input({ type, placeholder, id, icon: Icon }) {
           type={type}
           placeholder={placeholder}
           id={id}
+          value={value}
+          onChange={onChange}
           className="flex-1 focus:outline-none text-black"
         />
       </div>
