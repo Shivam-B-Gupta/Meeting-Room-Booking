@@ -9,7 +9,7 @@ roomRoutes.post("/addRooms", adminAuthentication, async function (req, res) {
   const adminId = req.adminId;
 
   if (!name || !location || !capacity) {
-    res.json({
+    return res.status(400).json({
       mssg: "the inputs can't be empty",
     });
   }
@@ -74,6 +74,18 @@ roomRoutes.delete("/delete", adminAuthentication, async function (req, res) {
     res.json({ mssg: "deleted the room" });
   } catch (err) {
     res.status(403).json({ mssg: `error: ${err}` });
+  }
+});
+
+roomRoutes.get("/preview", async function (req, res) {
+  try {
+    const rooms = await roomModel.findAll();
+
+    res.json({
+      rooms,
+    });
+  } catch (err) {
+    res.json(`error while fetching data ${err}`);
   }
 });
 
