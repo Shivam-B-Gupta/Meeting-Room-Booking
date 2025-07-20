@@ -5,7 +5,7 @@ export default function Button({ textOnButton, onClick }) {
     <>
       <button
         onClick={onClick}
-        className="w-32 h-10 bg-purple-500 rounded-md cursor-pointer"
+        className="w-auto p-2 h-10 bg-purple-500 rounded-md cursor-pointer hover:bg-purple-400 transition"
       >
         {textOnButton}
       </button>
@@ -26,12 +26,23 @@ export function Button2({ textOnButton, Icon }) {
   );
 }
 
-export function Button3({ textOnButton }) {
+export function Button3({ textOnButton, onClick }) {
   return (
     <div className="">
-      <button className="bg-white text-black px-4 py-2 rounded-xl font-medium cursor-pointer hover:bg-gray-100 transition ">
+      <button
+        onClick={onClick}
+        className="bg-white text-black px-4 py-2 rounded-xl font-medium cursor-pointer hover:bg-gray-100 transition "
+      >
         {textOnButton}
       </button>
+    </div>
+  );
+}
+
+export function ButtonIcon({ Icon, onClick }) {
+  return (
+    <div className="bg-white rounded cursor-pointer" onClick={onClick}>
+      {Icon && <Icon stroke={2} className="text-black h-8" />}
     </div>
   );
 }

@@ -28,7 +28,7 @@ roomRoutes.post("/addRooms", adminAuthentication, async function (req, res) {
 });
 
 roomRoutes.put("/update", adminAuthentication, async function (req, res) {
-  const { name, location, capacity, amenities } = req.body;
+  const { name, location, capacity, amenities, roomId } = req.body;
   const adminId = req.adminId;
 
   if (!name || !location || !capacity || !amenities) {
@@ -38,7 +38,9 @@ roomRoutes.put("/update", adminAuthentication, async function (req, res) {
   }
 
   try {
-    const admin = await roomModel.findOne({ where: { adminId: adminId } });
+    const admin = await roomModel.findOne({
+      where: { adminId: adminId, id: roomId },
+    });
 
     if (!admin) {
       res.json({ mssg: "Room not found" });

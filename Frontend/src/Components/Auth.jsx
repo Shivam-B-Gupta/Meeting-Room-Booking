@@ -8,8 +8,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Auth({ type }) {
-  const isSignup = type === "signup";
-  const isAdmin = type === "admin";
+  const [isSignup] = useState(type === "signup");
+  const [isAdmin, setIsAdmin] = useState(type === "admin");
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -32,10 +32,16 @@ export default function Auth({ type }) {
       );
 
       const token = response.data.token;
-      localStorage.setItem("token: ", token);
+      localStorage.setItem("token", token);
 
       const name = response.data.name;
-      localStorage.setItem("name: ", name);
+      localStorage.setItem("name", name);
+
+      if (isAdmin) {
+        localStorage.setItem("user_type", "admin");
+      } else {
+        localStorage.setItem("user_type", "employee");
+      }
 
       navigate(`${isSignup ? "/meetspace/signin" : "/meetspace/home"}`);
     } catch (error) {
@@ -48,6 +54,10 @@ export default function Auth({ type }) {
     }
   };
 
+  const handleChange = () => {
+    setIsAdmin((prev) => !prev);
+  };
+
   return (
     <div className="flex w-full h-screen">
       <div className="w-1/2">
@@ -55,6 +65,7 @@ export default function Auth({ type }) {
       </div>
       <div className="w-1/2 flex flex-col justify-center items-center gap-y-10">
         <h1 className="text-4xl font-semibold">
+          {isAdmin ? "Admin " : "Employee  "}
           {isSignup ? "SignUp" : "Signin"}
         </h1>
         <Input
@@ -84,10 +95,16 @@ export default function Auth({ type }) {
             />
           </>
         )}
-        <Button
-          textOnButton={isSignup ? "Signup" : "Signin"}
-          onClick={handleLogin}
-        />
+        <div className="flex gap-4">
+          <Button
+            textOnButton={isSignup ? "Signup" : "Signin"}
+            onClick={handleLogin}
+          />
+          <Button
+            textOnButton={isAdmin ? "Signup as Employee" : "Signup as Admin"}
+            onClick={handleChange}
+          />
+        </div>
       </div>
     </div>
   );
