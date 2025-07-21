@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Input from "./Input";
 import Button from "./Button";
 import MailIcon from "../Icons/Mail";
 import PasswordIcon from "../Icons/Password";
 import SideComponent from "./SideComponent";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { replace, useNavigate } from "react-router-dom";
+import { UserContext } from "../hooks/UserContext"; // adjust path if needed
 
 export default function Auth({ type }) {
   const [isSignup] = useState(type === "signup");
   const [isAdmin, setIsAdmin] = useState(type === "admin");
   const navigate = useNavigate();
+  const { setUserType } = useContext(UserContext);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,13 +39,13 @@ export default function Auth({ type }) {
       const name = response.data.name;
       localStorage.setItem("name", name);
 
-      if (isAdmin) {
-        localStorage.setItem("user_type", "admin");
-      } else {
-        localStorage.setItem("user_type", "employee");
-      }
+      const user_type = isAdmin ? "admin" : "employee";
+      localStorage.setItem("user_type", user_type);
+      setUserType(user_type); // ← context update
 
-      navigate(`${isSignup ? "/meetspace/signin" : "/meetspace/home"}`);
+      navigate(`${isSignup ? "/meetspace/signin" : "/meetspace/home"}`, {
+        replace: true,
+      });
     } catch (error) {
       console.error(
         `${isSignup ? "Signup" : "Signin"} failed:`,

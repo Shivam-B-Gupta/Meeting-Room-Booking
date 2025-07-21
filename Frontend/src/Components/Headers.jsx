@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Bell from "../Icons/Bell";
 import User from "../Icons/User";
 import { Link } from "react-router-dom";
 import PopUp from "./PopUp";
+import { HashLink } from "react-router-hash-link";
+import { UserContext } from "../hooks/UserContext";
 
 export default function Headers() {
   const [showPopUp, setShowPopUp] = useState(false);
-  const user_type = localStorage.getItem("user_type");
-  const isAdmin = user_type === "admin";
-
+  const { userType } = useContext(UserContext);
+  const isAdmin = userType === "admin";
   const handlePopUp = (e) => {
+    console.log(userType);
     e.preventDefault();
     setShowPopUp(true);
   };
@@ -36,9 +38,9 @@ export default function Headers() {
                 Add Room
               </a>
             ) : (
-              <Link to="/meetspace/bookaspace" className={navLink}>
+              <HashLink smooth to="/meetspace/home#explore" className={navLink}>
                 Book a Space
-              </Link>
+              </HashLink>
             )}
             <Link to="/meetspace/home#explore" className={navLink}>
               Explore

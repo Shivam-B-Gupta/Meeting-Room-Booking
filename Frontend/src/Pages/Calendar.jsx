@@ -13,7 +13,6 @@ export default function Calendar() {
       <CommonRow col1="02:00 - 03:00" col2="2" />
       <CommonRow col1="03:00 - 04:00" col2="2" />
       <CommonRow col1="04:00 - 05:00" col2="2" />
-      <PopUp />
     </div>
   );
 }

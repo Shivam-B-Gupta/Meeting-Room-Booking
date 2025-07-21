@@ -5,8 +5,8 @@ import {
   IconCoffee,
   IconDeviceLaptop,
 } from "@tabler/icons-react";
-import { Button2, Button3, ButtonIcon } from "./Button";
-import { useContext, useState } from "react";
+import { Button3, ButtonIcon } from "./Button";
+import { useState } from "react";
 import axios from "axios";
 import { IconTrash, IconEdit } from "@tabler/icons-react";
 import { BACKEND_URL } from "../config";
@@ -52,8 +52,7 @@ export default function Card({
     e.preventDefault();
     setShowPopUp(true);
   };
-  const handleBook = () => {}; // Just placeholder if not defined
-
+  const handleBook = () => {};
   return (
     <div className="relative h-120 w-80 rounded-[2rem] overflow-hidden shadow-lg ml-auto mr-auto mt-6 mb-6">
       <div className="bg-[url('/office.webp')] bg-cover bg-center h-80 w-80">
