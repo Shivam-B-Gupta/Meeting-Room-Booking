@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
-import sequelize from "../db";
-import employeeModel from "./employee";
-import roomModel from "./room";
+import sequelize from "../db.js";
+import employeeModel from "./employee.js";
+import roomModel from "./room.js";
 
 const bookingModel = sequelize.define("Booking", {
   roomId: {
@@ -21,12 +21,20 @@ const bookingModel = sequelize.define("Booking", {
     },
     onDelete: "CASCADE", // optional: delete booking if admin is deleted
   },
-  startTime: {
+
+  day: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  date: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  endTime: {
-    type: DataTypes.DATE,
+  time: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 });
+
+export default bookingModel;

@@ -4,54 +4,55 @@ import employeeAuthentication from "../middlewares/employee.js";
 import { Op } from "sequelize";
 import employeeModel from "../db/models/employee.js";
 import roomModel from "../db/models/room.js";
+import bookingModel from "../db/models/booking.js";
+import sendBookingConfirmation from "../utils/mail.js";
 
 bookingRoutes.post(
   "/booking",
   employeeAuthentication,
   async function (req, res) {
-    const { roomId, startTime, endTime } = req.body;
-    const employeeId = req.userId;
-    const bookingTime = `${startTime} to ${endTime}`;
-    const room = await roomModel.findByPk(roomId);
-    const employee = await employeeModel.findByPk(employeeId);
+    try {
+      const { roomId, day, time } = req.body;
+      const userId = req.userId;
+      const normalizedDate = new Date(req.body.date);
+      // const bookingTime = `${startTime} to ${endTime}`;
+      const room = await roomModel.findByPk(roomId);
+      const employee = await employeeModel.findByPk(userId);
+      console.log("all good 1");
 
-    const existingBooking = await bookingModel.findOne({
-      where: {
-        roomId,
-        [Op.or]: [
-          {
-            startTime: {
-              [Op.between]: [startTime, endTime],
-            },
-          },
-          {
-            endTime: {
-              [Op.between]: [startTime, endTime],
-            },
-          },
-        ],
-      },
-    });
-
-    if (existingBooking) {
-      res.status(403).json({
-        mssg: `Room is not available between ${startTime} to ${endTime}`,
+      const existingBooking = await bookingModel.findOne({
+        where: {
+          roomId,
+          date: normalizedDate,
+          time,
+        },
       });
+      console.log("all good 2");
+
+      if (existingBooking) {
+        return res.status(403).json({
+          mssg: `Room is not available between ${time}`,
+        });
+      }
+      console.log("Existing booking:", existingBooking);
+
+      await bookingModel.create({
+        roomId,
+        userId,
+        day,
+        date: normalizedDate,
+        time,
+      });
+      console.log("all good 4");
+
+      // Send confirmation email
+      await sendBookingConfirmation(employee.email, room.name, time);
+
+      res.json({ mssg: "Room booked and confirmation sent!" });
+    } catch (err) {
+      console.error("Booking error:", err);
+      res.status(500).json({ error: "Internal Server Error" });
     }
-
-    await bookingModel.create({
-      roomId,
-      employeeId,
-      startTime,
-      endTime,
-    });
-
-    res.json({ mssg: "Room booked successfully" });
-
-    // Send confirmation email
-    await sendBookingConfirmation(employee.email, room.name, bookingTime);
-
-    res.json({ mssg: "Room booked and confirmation sent!" });
   }
 );
 
@@ -86,5 +87,7 @@ bookingRoutes.get("/availableRooms", async (req, res) => {
 
   res.json(availableRooms);
 });
+
+export default bookingRoutes;
 
 // sshivamgupta833@gmail.com
