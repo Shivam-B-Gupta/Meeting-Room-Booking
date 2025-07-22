@@ -12,6 +12,7 @@ import { IconTrash, IconEdit } from "@tabler/icons-react";
 import { BACKEND_URL } from "../config";
 import PopUp from "./PopUp";
 import { useRooms } from "../hooks/RoomContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Card({
   RoomName,
@@ -26,6 +27,7 @@ export default function Card({
   const user_type = localStorage.getItem("user_type");
   const token = localStorage.getItem("token");
   const isAdmin = user_type === "admin";
+  const navigate = useNavigate();
   const [showPopUp, setShowPopUp] = useState(false);
   const [name, setName] = useState(RoomName);
   const [location, setLocation] = useState(Location);
@@ -52,7 +54,10 @@ export default function Card({
     e.preventDefault();
     setShowPopUp(true);
   };
-  const handleBook = () => {};
+  const handleBook = () => {
+    localStorage.setItem("roomId", roomId);
+    navigate("/meetspace/bookaspace");
+  };
   return (
     <div className="relative h-120 w-80 rounded-[2rem] overflow-hidden shadow-lg ml-auto mr-auto mt-6 mb-6">
       <div className="bg-[url('/office.webp')] bg-cover bg-center h-80 w-80">
