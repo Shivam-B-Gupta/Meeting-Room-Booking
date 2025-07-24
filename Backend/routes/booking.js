@@ -91,3 +91,33 @@ bookingRoutes.get("/availableRooms", async (req, res) => {
 export default bookingRoutes;
 
 // sshivamgupta833@gmail.com
+
+// GET all bookings for a specific room
+bookingRoutes.get("/booking/all/:roomId", async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    const bookings = await bookingModel.findAll({ where: { roomId } });
+    res.json({ bookings });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch bookings" });
+  }
+});
+
+bookingRoutes.get("/bookingInfo", async (req, res) => {
+  try {
+    const { roomId } = req.query;
+
+    const bookingData = await bookingModel.findAll({
+      where: { roomId }, // find by foreign key
+    });
+
+    if (!bookingData || bookingData.length === 0) {
+      return res.status(404).json({ error: "No bookings found for this room" });
+    }
+
+    res.json({ bookingData });
+  } catch (err) {
+    console.error("Error fetching booking:", err);
+    res.status(500).json({ error: "Failed to fetch booking data" });
+  }
+});

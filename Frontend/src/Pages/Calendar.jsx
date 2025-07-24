@@ -2,12 +2,26 @@ import axios from "axios";
 import TimeRow from "../Components/CalendarRows";
 import { CommonRow } from "../Components/CalendarRows";
 import { BACKEND_URL } from "../config";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function Calendar() {
+  const timeSlots = [
+    "10:00 - 11:00",
+    "11:00 - 12:00",
+    "12:00 - 01:00",
+    "01:00 - 02:00",
+    "02:00 - 03:00",
+    "03:00 - 04:00",
+    "04:00 - 05:00",
+  ];
   const today = new Date();
   const day = [];
   const roomId = localStorage.getItem("roomId");
   const token = localStorage.getItem("token");
+  const [bookedSlots, setBookedSlots] = useState(
+    Array(timeSlots.length).fill(Array(7).fill(false))
+  );
 
   for (let i = 0; i < 7; i++) {
     const date = new Date();
@@ -33,21 +47,22 @@ export default function Calendar() {
       await axios.post(`${BACKEND_URL}/booking/booking`, data, {
         headers: { token: token },
       });
+
+      const response = await axios.get(
+        `${BACKEND_URL}/booking/bookingInfo?roomId=${roomId}`
+      );
+      console.log(response.data);
       alert("booked successfully");
+
+      const newBooked = [...bookedSlots];
+      const rowIndex = timeSlots.indexOf(timeSlot);
+      newBooked[rowIndex] = [...newBooked[rowIndex]];
+      newBooked[rowIndex][dayIndex] = true;
+      setBookedSlots(newBooked);
     } catch (err) {
       console.log(`error while sending data to the backend, Err: ${err}`);
     }
   };
-
-  const timeSlots = [
-    "10:00 - 11:00",
-    "11:00 - 12:00",
-    "12:00 - 01:00",
-    "01:00 - 02:00",
-    "02:00 - 03:00",
-    "03:00 - 04:00",
-    "04:00 - 05:00",
-  ];
 
   return (
     <div>
@@ -59,6 +74,7 @@ export default function Calendar() {
           onClick={({ dayIndex }) =>
             handleSlotClick({ dayIndex, timeSlot: slot })
           }
+          status={bookedSlots[rowIndex]}
         />
       ))}
     </div>
