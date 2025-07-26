@@ -5,7 +5,7 @@ function employeeAuthentication(req, res, next) {
   const token = req.headers.token;
 
   if (!token) {
-    res.status(403).json({
+    return res.status(403).json({
       mssg: "token missing",
     });
   }
@@ -15,7 +15,7 @@ function employeeAuthentication(req, res, next) {
     req.userId = decodedValue.id;
     next();
   } catch (err) {
-    res.status(402).json({
+    return res.status(402).json({
       mssg: "You are not signed in",
     });
   }

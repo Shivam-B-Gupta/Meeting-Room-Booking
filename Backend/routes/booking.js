@@ -18,7 +18,6 @@ bookingRoutes.post(
       // const bookingTime = `${startTime} to ${endTime}`;
       const room = await roomModel.findByPk(roomId);
       const employee = await employeeModel.findByPk(userId);
-      console.log("all good 1");
 
       const existingBooking = await bookingModel.findOne({
         where: {
@@ -27,14 +26,12 @@ bookingRoutes.post(
           time,
         },
       });
-      console.log("all good 2");
 
       if (existingBooking) {
         return res.status(403).json({
           mssg: `Room is not available between ${time}`,
         });
       }
-      console.log("Existing booking:", existingBooking);
 
       await bookingModel.create({
         roomId,
@@ -43,7 +40,6 @@ bookingRoutes.post(
         date: normalizedDate,
         time,
       });
-      console.log("all good 4");
 
       // Send confirmation email
       await sendBookingConfirmation(employee.email, room.name, time);
@@ -56,52 +52,7 @@ bookingRoutes.post(
   }
 );
 
-bookingRoutes.get("/availableRooms", async (req, res) => {
-  const { startTime, endTime } = req.query;
-
-  const bookedRooms = await bookingModel.findAll({
-    where: {
-      [Op.or]: [
-        {
-          startTime: {
-            [Op.between]: [startTime, endTime],
-          },
-        },
-        {
-          endTime: {
-            [Op.between]: [startTime, endTime],
-          },
-        },
-      ],
-    },
-    attributes: ["roomId"],
-  });
-
-  const bookedRoomIds = bookedRooms.map((b) => b.roomId);
-
-  const availableRooms = await roomModel.findAll({
-    where: {
-      id: { [Op.notIn]: bookedRoomIds },
-    },
-  });
-
-  res.json(availableRooms);
-});
-
-export default bookingRoutes;
-
 // sshivamgupta833@gmail.com
-
-// GET all bookings for a specific room
-bookingRoutes.get("/booking/all/:roomId", async (req, res) => {
-  try {
-    const { roomId } = req.params;
-    const bookings = await bookingModel.findAll({ where: { roomId } });
-    res.json({ bookings });
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch bookings" });
-  }
-});
 
 bookingRoutes.get("/bookingInfo", async (req, res) => {
   try {
@@ -121,3 +72,31 @@ bookingRoutes.get("/bookingInfo", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch booking data" });
   }
 });
+
+bookingRoutes.delete("/cancel", employeeAuthentication, async (req, res) => {
+  try {
+    const { bookingId } = req.body;
+    const userId = req.userId;
+
+    const booking = await bookingModel.findOne({
+      where: {
+        id: bookingId,
+        userId: userId,
+      },
+    });
+
+    if (!bookingId) {
+      return res
+        .status(404)
+        .json({ error: "booking not found in the database" });
+    }
+
+    await booking.destroy();
+
+    res.json({ mssg: "booking canceled successfully" });
+  } catch (err) {
+    res.status(403).json({ error: err });
+  }
+});
+
+export default bookingRoutes;
