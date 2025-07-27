@@ -9,6 +9,7 @@ import Oops from "./Pages/Oops";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { RoomsProvider } from "./hooks/RoomContext";
 import { UserProvider } from "./hooks/UserContext";
+import UserNavigation from "./Components/UserNavigation";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
                 <Route path="home" element={<Home />} />
                 <Route path="bookaspace" element={<Calendar />} />
                 <Route path="addroom" element={<PopUp />} />
+                {/* <Route path="test" element={<UserNavigation />} />{" "} */}
+                {/* testing route */}
               </Route>
               <Route path="*" element={<Oops />} />
             </Routes>
