@@ -19,9 +19,9 @@ function App() {
           {/*  Wraping everything inside context provider */}
           <RoomsProvider>
             <Routes>
+              <Route path="/meetspace/signup" element={<Signup />} />
+              <Route path="/meetspace/signin" element={<Signin />} />
               <Route path="/meetspace" element={<Layout />}>
-                <Route path="signup" element={<Signup />} />
-                <Route path="signin" element={<Signin />} />
                 <Route path="home" element={<Home />} />
                 <Route path="bookaspace" element={<Calendar />} />
                 <Route path="addroom" element={<PopUp />} />

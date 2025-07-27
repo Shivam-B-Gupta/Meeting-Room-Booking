@@ -5,8 +5,8 @@ import MailIcon from "../Icons/Mail";
 import PasswordIcon from "../Icons/Password";
 import SideComponent from "./SideComponent";
 import axios from "axios";
-import { replace, useNavigate } from "react-router-dom";
-import { UserContext } from "../hooks/UserContext"; // adjust path if needed
+import { replace, useNavigate, Link } from "react-router-dom";
+import { UserContext } from "../hooks/UserContext";
 
 export default function Auth({ type }) {
   const [isSignup] = useState(type === "signup");
@@ -103,10 +103,25 @@ export default function Auth({ type }) {
             onClick={handleLogin}
           />
           <Button
-            textOnButton={isAdmin ? "Signup as Employee" : "Signup as Admin"}
+            textOnButton={
+              isAdmin
+                ? isSignup
+                  ? "Signup as employee"
+                  : "Signin as employee"
+                : isSignup
+                ? "Signup as Admin"
+                : "Signin as Admin"
+            }
             onClick={handleChange}
           />
         </div>
+        {isAdmin ? (
+          <Link to="/meetspace/signup" className="text-black">
+            Don't have an Account, Register
+          </Link>
+        ) : (
+          <Link to="/meetspace/signUp">Don't have an Account, Register</Link>
+        )}
       </div>
     </div>
   );

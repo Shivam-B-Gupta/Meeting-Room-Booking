@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
 import { IconUser, IconBell } from "@tabler/icons-react";
-import Bell from "../Icons/Bell";
-import User from "../Icons/User";
 import { Link } from "react-router-dom";
 import PopUp from "./PopUp";
 import { HashLink } from "react-router-hash-link";
@@ -66,9 +64,6 @@ export default function Headers() {
             </Link>
             <Link to="" className={navLink}>
               Contact us
-            </Link>
-            <Link to="/meetspace/test" className={navLink}>
-              test
             </Link>
           </nav>
         </header>
